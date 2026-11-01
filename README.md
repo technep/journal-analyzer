@@ -1,4 +1,4 @@
-# journal://analyzer
+# journal://analyzer [Click for Demo](https://technep.github.io/journal-analyzer)
 
 Analyze systemd journal logs from **another machine** — 100% client-side, nothing ever leaves your browser.
 

@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Warm near-black dark environment */
+    --background: 12 100% 1%;          /* #050100 */
+    --foreground: 40 15% 76%;          /* #CBC6B9 */
+    --card: 15 11% 8%;                 /* #181412 */
+    --card-foreground: 40 15% 76%;
+    --popover: 15 11% 8%;
+    --popover-foreground: 43 12% 90%;  /* #E9E7E2 */
+    --primary: 220 100% 57%;           /* #2474FF */
+    --primary-foreground: 43 12% 96%;
+    --secondary: 15 11% 12%;
+    --secondary-foreground: 40 15% 76%;
+    --muted: 15 11% 12%;
+    --muted-foreground: 40 10% 55%;
+    --accent: 15 11% 14%;
+    --accent-foreground: 43 12% 90%;
+    --destructive: 4 90% 58%;
+    --destructive-foreground: 43 12% 96%;
+    --border: 15 10% 16%;
+    --input: 15 10% 20%;
+    --ring: 220 100% 57%;
+    --radius: 0.5rem;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.35);
+  }
+
+  /* Custom scrollbar: transparent track, warm-gray thumb */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: hsl(40 10% 30%);
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: hsl(40 10% 40%);
+    background-clip: content-box;
+    border: 2px solid transparent;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-md px-3 py-1.5 font-mono text-[13px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-primary text-primary-foreground hover:bg-primary/85 active:bg-primary/70;
+  }
+  .btn-ghost {
+    @apply btn border border-border bg-transparent text-foreground hover:bg-accent active:bg-accent/60;
+  }
+
+  .field {
+    @apply w-full rounded-md border border-input bg-card px-2.5 py-1.5 font-mono text-[13px] text-foreground transition-colors duration-150 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+  }
+
+  .section-label {
+    @apply font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground;
+  }
+}
+
+/* Priority pills — plain CSS (class names are built dynamically, so they
+   must not live in a Tailwind layer that gets tree-shaken) */
+.prio-pill {
+  display: inline-block;
+  border-radius: 0.25rem;
+  padding: 1px 0.375rem;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1rem;
+  color: #100704;
+  min-width: 52px;
+  text-align: center;
+}
+.prio-emerg,
+.prio-alert,
+.prio-crit {
+  background: #ff6b5e;
+}
+.prio-err {
+  background: #ff8f85;
+}
+.prio-warning {
+  background: #ffc09a;
+}
+.prio-notice {
+  background: #efedbd;
+}
+.prio-info {
+  background: #aaf7b3;
+}
+.prio-debug {
+  background: #8ab2d1;
+}
+.prio-unknown {
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+}
+.unit-kernel {
+  color: #8ac1a0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

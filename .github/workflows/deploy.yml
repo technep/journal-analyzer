@@ -1,0 +1,62 @@
+# Build the React app and deploy it to GitHub Pages.
+# One-time setup in the repo: Settings → Pages → Source: "GitHub Actions".
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allows manual runs from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Build
+        working-directory: app
+        run: npm run build
+
+      # Downloadable dist.zip — find it on the workflow run page ("Artifacts")
+      - name: Package dist as zip
+        working-directory: app
+        run: cd dist && zip -r ../dist.zip .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: app/dist.zip
+          retention-days: 30
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,2 @@
+2025-01-01T00:00:00+00:00 edge-01 init.service[1]: started
+Jan  1 00:00:01 edge-01 net.service[2]: timeout failure

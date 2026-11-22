@@ -1,0 +1,151 @@
+{
+  "metadata": {
+    "date": "2026-11-22T09:12:43.454Z",
+    "browser": "Chromium via Playwright, headless, 1440x1000, UTC",
+    "corpus": "Deterministic synthetic 100,000-entry corpus; not a real-device claim",
+    "memory": "Linux browser-process-tree RSS sampled every 50 ms; shared pages can be counted in multiple processes",
+    "runsPerConfiguration": 1
+  },
+  "bundles": {
+    "baseline": {
+      "totalBytes": 1722820,
+      "keyAssets": [
+        {
+          "file": "assets/index-CINcodlm.js",
+          "bytes": 417727,
+          "gzipBytes": 140063
+        },
+        {
+          "file": "assets/index-Cb-0Fm9q.css",
+          "bytes": 126288,
+          "gzipBytes": 36014
+        }
+      ]
+    },
+    "optimized": {
+      "totalBytes": 3574823,
+      "keyAssets": [
+        {
+          "file": "assets/index-C9a25ft8.js",
+          "bytes": 426484,
+          "gzipBytes": 142965
+        },
+        {
+          "file": "assets/index-umNdKC7X.css",
+          "bytes": 126425,
+          "gzipBytes": 36064
+        },
+        {
+          "file": "assets/journalWorker-_7ILQ91f.js",
+          "bytes": 110897,
+          "gzipBytes": 35020
+        },
+        {
+          "file": "assets/journal_core_bg-DHQmBahr.wasm",
+          "bytes": 1732212,
+          "gzipBytes": 645910
+        }
+      ]
+    }
+  },
+  "runs": [
+    {
+      "target": "wasm",
+      "corpus": "benchmark.journal",
+      "cache": "cold",
+      "iteration": 0,
+      "inputBytes": 80102384,
+      "endToEndMs": 1087.2999999998137,
+      "loadLongTaskMs": 0,
+      "loadLongTasks": 0,
+      "loadMetrics": {
+        "decompressionMs": 52.49999999348074,
+        "objectTraversalMs": 382.1000000052154,
+        "stringConversionMs": 59.90000000130385,
+        "recordConstructionMs": 40.39999999944121,
+        "jsonParseMs": 0,
+        "textParseMs": 0,
+        "sortIndexMs": 0.2999999998137355,
+        "inputBytes": 80102384,
+        "totalMs": 904.7999999998137,
+        "fileReadMs": 88.09999999962747,
+        "zipExtractionMs": 0,
+        "wasmInitMs": 27.59999999962747,
+        "boundaryMs": 45.700000000186265,
+        "inputFileBytes": 80102384,
+        "engine": "wasm",
+        "loadLongTaskMs": 0,
+        "loadLongTasks": 0
+      },
+      "initialEngineFilterMs": 37.200000000186265,
+      "initialRecordsBoundaryMs": 9.299999999813735,
+      "initialRecordsRoundTripMs": 13.699999999254942,
+      "baselineRssBytes": 1046892544,
+      "peakRssBytes": 1431797760,
+      "peakRssDeltaBytes": 384905216,
+      "filterBaselineRssBytes": 1431797760,
+      "filterPeakRssBytes": 1452318720,
+      "filterPeakRssDeltaBytes": 20520960,
+      "filterWallMs": 98.6000000005588,
+      "engineFilterMs": 30,
+      "recordsBoundaryMs": 8.799999999813735,
+      "recordsRoundTripMs": 19.899999999441206,
+      "filterRenderResidueMs": 48.70000000111759,
+      "filterLongTaskMs": 0,
+      "filterLongTasks": 0,
+      "requestCount": 2,
+      "entriesPerSecond": 91970.93718386567,
+      "megabytesPerSecond": 73.67091327141887,
+      "errors": []
+    },
+    {
+      "target": "wasm",
+      "corpus": "benchmark.zip",
+      "cache": "cold",
+      "iteration": 0,
+      "inputBytes": 6389100,
+      "endToEndMs": 1353.9000000003725,
+      "loadLongTaskMs": 0,
+      "loadLongTasks": 0,
+      "loadMetrics": {
+        "decompressionMs": 59.799999996088445,
+        "objectTraversalMs": 339.4999999925494,
+        "stringConversionMs": 55.30000001192093,
+        "recordConstructionMs": 42.799999999813735,
+        "jsonParseMs": 0,
+        "textParseMs": 0,
+        "sortIndexMs": 0.40000000037252903,
+        "inputBytes": 80102384,
+        "totalMs": 1169.7000000001863,
+        "fileReadMs": 21.799999999813735,
+        "zipExtractionMs": 368.80000000074506,
+        "wasmInitMs": 28.5,
+        "boundaryMs": 45.200000000186265,
+        "inputFileBytes": 6389100,
+        "engine": "wasm",
+        "loadLongTaskMs": 0,
+        "loadLongTasks": 0
+      },
+      "initialEngineFilterMs": 43.5,
+      "initialRecordsBoundaryMs": 13.900000000372529,
+      "initialRecordsRoundTripMs": 18,
+      "baselineRssBytes": 1049350144,
+      "peakRssBytes": 1449324544,
+      "peakRssDeltaBytes": 399974400,
+      "filterBaselineRssBytes": 1449324544,
+      "filterPeakRssBytes": 1466822656,
+      "filterPeakRssDeltaBytes": 17498112,
+      "filterWallMs": 108,
+      "engineFilterMs": 38.700000000186265,
+      "recordsBoundaryMs": 8.600000000558794,
+      "recordsRoundTripMs": 13.200000000186265,
+      "filterRenderResidueMs": 56.09999999962747,
+      "filterLongTaskMs": 0,
+      "filterLongTasks": 0,
+      "requestCount": 2,
+      "entriesPerSecond": 73860.6987221896,
+      "megabytesPerSecond": 4.719033902059415,
+      "errors": []
+    }
+  ]
+}

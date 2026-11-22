@@ -1,0 +1,3 @@
+{"__REALTIME_TIMESTAMP":"1735689600000000","MESSAGE":"message 0 ok","_HOSTNAME":"edge-01","_PID":"0","PRIORITY":"0","_BOOT_ID":"00112233445566778899aabbccddeeff","_TRANSPORT":"journal","_SYSTEMD_UNIT":"init.service"}
+{"__REALTIME_TIMESTAMP":"1735689601000000","MESSAGE":"message 1 ok","_HOSTNAME":"edge-01","_PID":"1","PRIORITY":"1","_BOOT_ID":"00112233445566778899aabbccddeeff","_TRANSPORT":"journal","_SYSTEMD_UNIT":"net.service"}
+{"__REALTIME_TIMESTAMP":"1735689602000000","MESSAGE":"message 2 ok","_HOSTNAME":"edge-01","_PID":"2","PRIORITY":"2","_BOOT_ID":"00112233445566778899aabbccddeeff","_TRANSPORT":"journal","_SYSTEMD_UNIT":"sensor.service"}

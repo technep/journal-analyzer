@@ -1,0 +1,3 @@
+{"__REALTIME_TIMESTAMP":"1735689600000000","MESSAGE":"boot completed","_HOSTNAME":"edge-01","_SYSTEMD_UNIT":"init.service","_PID":"1","PRIORITY":"6","_BOOT_ID":"boot-a","_TRANSPORT":"journal"}
+{"__REALTIME_TIMESTAMP":"1735689601000000","MESSAGE":"network timeout","_HOSTNAME":"edge-01","_SYSTEMD_UNIT":"net.service","_PID":"42","PRIORITY":"4","_BOOT_ID":"boot-a","_TRANSPORT":"journal"}
+{"__REALTIME_TIMESTAMP":"1735689602000000","MESSAGE":"kernel panic detected","_HOSTNAME":"edge-01","_PID":"0","PRIORITY":"2","_BOOT_ID":"boot-b","_TRANSPORT":"kernel"}

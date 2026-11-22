@@ -1,0 +1,23 @@
+# VCS / editor noise
+.git
+.github
+.vscode
+.idea
+**/.DS_Store
+
+# Dependencies and build artifacts — keep the build context small and
+# prevent local artifacts from busting Docker layer caches
+node_modules
+dist
+core/target
+core/pkg
+
+# Legacy copy of the app; the root-level app is what gets built
+app
+
+# Not needed to build (fixtures are generated test data)
+tests
+*.journal
+*.journal~
+*.zip
+*.log

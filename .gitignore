@@ -6,6 +6,11 @@ dist-ssr/
 .vite/
 *.tsbuildinfo
 
+# --- Rust / WASM core ---
+# Build artifacts only; core/pkg IS committed (see README: prebuilt WASM
+# bindings are included so an ordinary build needs no Rust toolchain).
+core/target/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

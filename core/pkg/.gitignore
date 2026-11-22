@@ -1,0 +1,1 @@
+# Generated bindings are vendored so the web build works without a Rust toolchain.

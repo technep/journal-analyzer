@@ -1,10 +1,12 @@
-# Build the React app and deploy it to GitHub Pages.
+# Build the React app (with the Rust/WASM journal engine compiled from source)
+# and deploy it to GitHub Pages.
 # One-time setup in the repo: Settings → Pages → Source: "GitHub Actions".
 name: Build and deploy
 
 on:
   push:
     branches: [main]
+  pull_request: # gates run on PRs; deploy stays main-only
   workflow_dispatch: # allows manual runs from the Actions tab
 
 permissions:
@@ -13,12 +15,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      wasm_asset: ${{ steps.wasm-path.outputs.path }}
     steps:
       - uses: actions/checkout@v5
 
@@ -26,37 +30,105 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: app/package-lock.json
+          cache-dependency-path: package-lock.json
+
+      # Rust is preinstalled on ubuntu runners; add the WASM target first
+      # because rust-cache keys on the active toolchain.
+      - name: Add WASM Rust target
+        run: rustup target add wasm32-unknown-unknown
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: core
+
+      # wasm-bindgen-cli must match the wasm-bindgen crate version exactly,
+      # so read it from core/Cargo.lock instead of pinning it here.
+      - name: Install wasm-bindgen-cli (version from core/Cargo.lock)
+        run: |
+          set -euo pipefail
+          VERSION=$(awk '/^name = "wasm-bindgen"$/{getline; gsub(/[",]/, "", $3); print $3; exit}' core/Cargo.lock)
+          test -n "$VERSION"
+          echo "Installing wasm-bindgen-cli $VERSION"
+          cargo install wasm-bindgen-cli --version "$VERSION" --locked
 
       - name: Install dependencies
-        working-directory: app
         run: npm ci
 
+      # Fresh engine build — never trust the committed core/pkg artifacts.
+      - name: Build WASM engine from source
+        run: |
+          rm -rf core/pkg
+          npm run build:wasm
+
+      # Gates — must pass before the app builds or deploys.
+      - name: Lint
+        run: npm run lint
+
+      - name: Test Rust core
+        run: cargo test --manifest-path core/Cargo.toml
+
       - name: Build
-        working-directory: app
         run: npm run build
+
+      # Vite fingerprints the WASM file; record its hashed name so the
+      # post-deploy smoke test can request it.
+      - name: Locate WASM asset in bundle
+        id: wasm-path
+        run: |
+          set -euo pipefail
+          WASM_NAME=$(grep -rhoE 'journal_core_bg-[A-Za-z0-9_-]+\.wasm' dist | sort -u | head -1)
+          test -n "$WASM_NAME"
+          echo "path=assets/$WASM_NAME" >> "$GITHUB_OUTPUT"
 
       # Downloadable dist.zip — find it on the workflow run page ("Artifacts")
       - name: Package dist as zip
-        working-directory: app
         run: cd dist && zip -r ../dist.zip .
 
       - uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: app/dist.zip
+          path: dist.zip
           retention-days: 30
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: app/dist
+          path: dist
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  smoke-test:
+    needs: [build, deploy]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify deployed site and WASM asset return HTTP 200
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+          WASM_URL: ${{ needs.deploy.outputs.page_url }}${{ needs.build.outputs.wasm_asset }}
+        run: |
+          set -euo pipefail
+          test -n "$PAGE_URL"
+          for url in "$PAGE_URL" "$WASM_URL"; do
+            code=
+            for attempt in 1 2 3 4 5; do
+              code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "$url") && [ "$code" = 200 ] && break
+              echo "attempt $attempt: $url returned $code; retrying in 20s"
+              sleep 20
+            done
+            if [ "$code" != 200 ]; then
+              echo "FAIL: $url returned $code"
+              exit 1
+            fi
+            echo "OK: $url"
+          done
